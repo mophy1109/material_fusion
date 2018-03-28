@@ -1,5 +1,0 @@
-/media/cwh1001/Workspace/CUDA_projects/material_fusion/CMakeFiles/edit_cache.dir
-/media/cwh1001/Workspace/CUDA_projects/material_fusion/CMakeFiles/rebuild_cache.dir
-/media/cwh1001/Workspace/CUDA_projects/material_fusion/src/CMakeFiles/edit_cache.dir
-/media/cwh1001/Workspace/CUDA_projects/material_fusion/src/CMakeFiles/rebuild_cache.dir
-/media/cwh1001/Workspace/CUDA_projects/material_fusion/src/CMakeFiles/material_fusion.dir
