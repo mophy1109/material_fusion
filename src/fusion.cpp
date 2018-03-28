@@ -1,5 +1,4 @@
 
-
 void fusionImages(vector<string> image_files):
     # 读取第一张图作为初始结果
     result = cv2::imread("zirconSmall/1/{}".format(image_files[0]), 0)

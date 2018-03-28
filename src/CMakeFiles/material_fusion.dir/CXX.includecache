@@ -19,6 +19,10 @@ cv.h
 /media/cwh1001/Workspace/CUDA_projects/material_fusion/src/cv.h
 highgui.h
 /media/cwh1001/Workspace/CUDA_projects/material_fusion/src/highgui.h
+preprocess.h
+/media/cwh1001/Workspace/CUDA_projects/material_fusion/src/preprocess.h
+
+/media/cwh1001/Workspace/CUDA_projects/material_fusion/src/preprocess.h
 
 /usr/local/include/opencv/cv.h
 opencv2/core/core_c.h

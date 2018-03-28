@@ -33,3 +33,7 @@
 
 #data
 /data/
+
+#CMakeFiles
+/src/CMakefiles/
+/CMakefiles/

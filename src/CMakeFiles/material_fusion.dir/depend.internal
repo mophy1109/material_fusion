@@ -3,6 +3,7 @@
 
 src/CMakeFiles/material_fusion.dir/main.cpp.o
  /media/cwh1001/Workspace/CUDA_projects/material_fusion/src/main.cpp
+ /media/cwh1001/Workspace/CUDA_projects/material_fusion/src/preprocess.h
  /usr/local/include/opencv/cv.h
  /usr/local/include/opencv/cxcore.h
  /usr/local/include/opencv/highgui.h
