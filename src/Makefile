@@ -152,6 +152,33 @@ main.cpp.s:
 	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+preprocess.o: preprocess.cpp.o
+
+.PHONY : preprocess.o
+
+# target to build an object file
+preprocess.cpp.o:
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/preprocess.cpp.o
+.PHONY : preprocess.cpp.o
+
+preprocess.i: preprocess.cpp.i
+
+.PHONY : preprocess.i
+
+# target to preprocess a source file
+preprocess.cpp.i:
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/preprocess.cpp.i
+.PHONY : preprocess.cpp.i
+
+preprocess.s: preprocess.cpp.s
+
+.PHONY : preprocess.s
+
+# target to generate assembly for a file
+preprocess.cpp.s:
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/preprocess.cpp.s
+.PHONY : preprocess.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -164,6 +191,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... preprocess.o"
+	@echo "... preprocess.i"
+	@echo "... preprocess.s"
 .PHONY : help
 
 

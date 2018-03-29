@@ -1,8 +1,3 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(material_fusion)
-
-SET(CMAKE_CXX_FLAGS "-std=c++0x")
-
 # OpenCV依赖
 find_package( OpenCV REQUIRED )
 
@@ -19,9 +14,10 @@ find_package(Glew REQUIRED)
 include_directories("/media/cwh1001/Workspace/SiftGPU/src/SiftGPU" ${OpenGL_INCLUDE_DIR})
 set(SIFTGPU_LIBS "/media/cwh1001/Workspace/SiftGPU/bin/libsiftgpu.so")
 
-add_executable( material_fusion main.cpp )
+add_executable( material_fusion main.cpp preprocess.cpp)
 
 target_link_libraries( material_fusion
+
     ${OpenCV_LIBS}
     ${SIFTGPU_LIBS}
     ${GLEW_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES}

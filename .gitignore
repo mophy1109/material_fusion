@@ -35,5 +35,6 @@
 /data/
 
 #CMakeFiles
+/bin/
 /src/CMakeFiles/
 /CMakeFiles/

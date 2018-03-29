@@ -55,9 +55,9 @@ vector<string> get_all_files(string path, string suffix)
 
 int main() {  
     vector<string> files;
-    string src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/video/";  
-    string tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
-    
+    char* src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";  
+    char* tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
+
     sampling(src, tar_dir);
 
     // files = get_all_files(src,".*(jpg|bmp|jpeg)$");
@@ -67,4 +67,4 @@ int main() {
     //     cout<<files[i]<<endl;  
     // }
     return 0;  
-}  
+}

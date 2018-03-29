@@ -2,12 +2,14 @@
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/imgproc/imgproc.hpp>  
 #include <iostream>  
+#include<fstream>  
+
 #include "preprocess.h"
 
 using namespace std;  
 using namespace cv;  
 
-void sampling(string src, string tar_dir){
+void sampling(char* src, char* tar_dir){
 
     //打开视频
     VideoCapture capture(src);
@@ -30,37 +32,36 @@ void sampling(string src, string tar_dir){
     Mat frameImg;//存储单帧图像
     Mat roi_img;
     Rect rect(0, 0, width, height - 2);//由于源视频地步出现黑边，需要裁剪2px宽度，roi设置为width×（height-1）的图像
+    
 
-    long i = 0; //采样序号
+    int i = 0; //采样序号
 
-    for (long f = 0; f < totalFrameNumber; f++)
+    for (int currentFrame = 0; currentFrame < totalFrameNumber; currentFrame++)
     {
         //读取下一帧
+        
         if(!capture.read(frameImg))
         {
             cout<<"读取视频失败"<<endl;
-            return -1;
+            return;
         }
-
+        
         //设置采样间隔,当前设置采样率为3fps
-        if (f % int(fps/3) != 0){
+        if (currentFrame % int(rate/3) != 0){
             continue;
         }
-       
-        frameImg(rect).copyto(roi_img);//截取图像
 
-        string tmp_filename;
-        sprintf(tmp_filename, "sam", "%05d", i,"jpg");//统一文件名格式
+        frameImg(rect).copyTo(roi_img);//截取图像
+        
+        char tmp_filename[100];
+        sprintf(tmp_filename, "%05d.jpg",i);
 
-        string tar_path = tar_dir + tmp_filename;
+        string filename(tmp_filename);
+        string tar_path = tar_dir + filename;
 
         //调试输出
-        cout<< tar_path <<endl;
-
-        imwrite(tmp_filename, roi_img);
-
-        cout<<"Reading "<<currentFrame<<" frame"<<endl;
-
-        currentFrame++;
+        // cout<< tar_path <<endl;
+        imwrite(tar_path, roi_img);
+        i++;
     }  
 }
