@@ -38,3 +38,5 @@
 /bin/
 /src/CMakeFiles/
 /CMakeFiles/
+Makefile
+CMakeCache.txt
