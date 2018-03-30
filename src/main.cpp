@@ -1,87 +1,41 @@
 /*
- * @Author: USTB.MophyChen 
- * @Date: 2018-03-29 16:30:25 
+ * @Author: USTB.MophyChen
+ * @Date: 2018-03-29 16:30:25
  * @Last Modified by: USTB.MophyChen
  * @Last Modified time: 2018-03-30 14:20:09
  */
- 
-#include <dirent.h>
-#include <iostream>
-#include <regex>
-#include <string>
+
+#include "CFusion.h"
+#include "Preprocess.h"
 #include "cv.h"
 #include "highgui.h"
-#include "preprocess.h"
+#include <dirent.h>
+#include <iostream>
+#include <string>
 
 using namespace std;
 using namespace cv;
 
-vector<string> get_all_files(string path, string suffix)
-{
-    vector<string> files;
-    files.clear();
-    regex reg_obj(suffix);
+void ProcessWithSamping() {
+	char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";
+	char *tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 
-    vector<string> paths;
-    paths.push_back(path);
+	// Sampling(src, tar_dir);
 
-    for(int i = 0; i < paths.size(); i++)
-    {
-        string curr_path = paths[i];
-        DIR *dp;
-        struct dirent *dirp;
-        if((dp = opendir(curr_path.c_str())) == NULL)
-        {
-            cerr << "can not open this file." << endl;
-            continue;
-        }
-        while((dirp = readdir(dp)) != NULL)
-        {
-            if(dirp->d_type == 4)
-            {
-                if((dirp->d_name)[0] == '.') // 排除 '.' 和 '..'
-                    continue;
-                string tmp_path = curr_path + "/" + dirp->d_name;
-                cout << tmp_path << " ";
-                paths.push_back(tmp_path);
-                cout << paths[paths.size() - 1] << endl;
-            }
-            else if(dirp->d_type == 8)
-            {
-                if(regex_match(dirp->d_name, reg_obj))
-                {
-                    string full_path = curr_path + "/" + dirp->d_name;
-                    files.push_back(full_path);
-                }
-            }
-        }
-        closedir(dp);
-    }
-    return files;
+	vector<string> files = GetAllFiles(tar_dir, ".*(jpg|bmp|jpeg)$");
+	cout << "==========start program=========" << endl;
+	for (int i = 0; i < files.size(); i++) {
+		cout << files[i] << endl;
+	}
 }
 
-void processWithSamping(){
-    char* src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";  
-    char* tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
-
-    // sampling(src, tar_dir);
-
-    vector<string> files = get_all_files(tar_dir,".*(jpg|bmp|jpeg)$");
-    cout<< "==========start program========="<<endl;
-    for(int i = 0; i <files.size(); i++)  
-    {  
-        cout<<files[i]<<endl;  
-    }
-}
-
-void processWithoutSamping(){
-    vector<string> files;
-    char* src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";  
-    char* tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
-
+void ProcessWithoutSamping() {
+	vector<string> files;
+	char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";
+	char *tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 }
 
 int main() {
-    processWithSamping();
-    return 0;  
+	ProcessWithSamping();
+	return 0;
 }

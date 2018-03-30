@@ -1,0 +1,36 @@
+**作用域前缀**
+无 局部变量
+
+m_ 类的成员变量（member
+
+sm_ 类的静态成员变量（static member
+
+s_ 静态变量（static
+
+g_ 外部全局变量（global
+
+sg_ 静态全局变量（static global
+
+gg_ 进程间共享的共享数据段全局变量（global global)
+
+
+**类型前缀**
+n 整型和位域变量（number）
+
+e 枚举型变量（enumeration）
+
+c 字符型变量（char）
+
+b 布尔型变量（bool）
+
+f 浮点型变量（float）
+
+p 指针型变量和迭代子（pointer）
+
+pfn 特别针对指向函数的指针变量和函数对象指针（pointer of function）
+
+g 数组（grid）
+
+i 类的实例（instance）
+
+对于经常用到的类，也可以定义一些专门的前缀，如：std::string和std::wstring类的前缀可以定义为"st"，std::vector类的前缀可以定义为"v"等等。

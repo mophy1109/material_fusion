@@ -44,3 +44,6 @@ CMakeCache.txt
 
 #vscode
 /.vscode/
+
+#clang-format
+.clang-format
