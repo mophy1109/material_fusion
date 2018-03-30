@@ -1,8 +1,14 @@
+/*
+ * @Author: USTB.MophyChen 
+ * @Date: 2018-03-29 16:30:41 
+ * @Last Modified by: USTB.MophyChen
+ * @Last Modified time: 2018-03-29 16:31:50
+ */
+ 
 #include <opencv2/core/core.hpp>  
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/imgproc/imgproc.hpp>  
 #include <iostream>  
-#include<fstream>  
 
 #include "preprocess.h"
 
@@ -28,7 +34,7 @@ void sampling(char* src, char* tar_dir){
     int width = (int)capture.get(CV_CAP_PROP_FRAME_WIDTH);
     int height = (int)capture.get(CV_CAP_PROP_FRAME_HEIGHT);
     cout<<"Resolution: "<<width<<"*"<<height<<endl;
-
+    cout<<"Sampling video...."<<endl;
     Mat frameImg;//存储单帧图像
     Mat roi_img;
     Rect rect(0, 0, width, height - 2);//由于源视频地步出现黑边，需要裁剪2px宽度，roi设置为width×（height-1）的图像

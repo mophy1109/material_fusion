@@ -1,12 +1,18 @@
+/*
+ * @Author: USTB.MophyChen 
+ * @Date: 2018-03-30 12:49:23 
+ * @Last Modified by: USTB.MophyChen
+ * @Last Modified time: 2018-03-30 13:08:04
+ */
 
-void fusionImages(vector<string> image_files):
-    # 读取第一张图作为初始结果
-    result = cv2::imread("zirconSmall/1/{}".format(image_files[0]), 0)
-    imgin1 = result
+#include <SiftGPU.h>
+#include <vector>
 
-    for img in image_files:
-        print ("Reading file {}".format(img))
-        imgin2 = cv2.imread("zirconSmall/1/{}".format(img), 0)
-        result, imgin1 = fusion.detect(imgin1, imgin2, result)
-        del imgin2
-    cv2.imwrite("result/" + save_name, result)
+
+
+void fusionImages(char* dir){
+
+}
+
+// void fusionImages(vector<char*> image_files){
+// }

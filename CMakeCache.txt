@@ -202,6 +202,9 @@ OPENGL_xmesa_INCLUDE_DIR:PATH=OPENGL_xmesa_INCLUDE_DIR-NOTFOUND
 OpenCV_DIR:PATH=/usr/local/share/OpenCV
 
 //Dependencies for target
+fusion_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
 material_fusion.lib_LIB_DEPENDS:STATIC=
 
 //Value Computed by CMake

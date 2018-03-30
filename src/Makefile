@@ -125,6 +125,21 @@ material_fusion/fast:
 	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/build
 .PHONY : material_fusion/fast
 
+# Convenience name for target.
+src/CMakeFiles/fusion.dir/rule:
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/fusion.dir/rule
+.PHONY : src/CMakeFiles/fusion.dir/rule
+
+# Convenience name for target.
+fusion: src/CMakeFiles/fusion.dir/rule
+
+.PHONY : fusion
+
+# fast build rule for target.
+fusion/fast:
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/fusion.dir/build.make src/CMakeFiles/fusion.dir/build
+.PHONY : fusion/fast
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -158,7 +173,7 @@ preprocess.o: preprocess.cpp.o
 
 # target to build an object file
 preprocess.cpp.o:
-	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/preprocess.cpp.o
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/fusion.dir/build.make src/CMakeFiles/fusion.dir/preprocess.cpp.o
 .PHONY : preprocess.cpp.o
 
 preprocess.i: preprocess.cpp.i
@@ -167,7 +182,7 @@ preprocess.i: preprocess.cpp.i
 
 # target to preprocess a source file
 preprocess.cpp.i:
-	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/preprocess.cpp.i
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/fusion.dir/build.make src/CMakeFiles/fusion.dir/preprocess.cpp.i
 .PHONY : preprocess.cpp.i
 
 preprocess.s: preprocess.cpp.s
@@ -176,7 +191,7 @@ preprocess.s: preprocess.cpp.s
 
 # target to generate assembly for a file
 preprocess.cpp.s:
-	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/preprocess.cpp.s
+	cd /media/cwh1001/Workspace/CUDA_projects/material_fusion && $(MAKE) -f src/CMakeFiles/fusion.dir/build.make src/CMakeFiles/fusion.dir/preprocess.cpp.s
 .PHONY : preprocess.cpp.s
 
 # Help Target
@@ -188,6 +203,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... material_fusion"
+	@echo "... fusion"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

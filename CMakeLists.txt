@@ -12,7 +12,6 @@ SET(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -Wno-write-strings -Wno-unused-result -Wno-
 
 INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/include
-
   /usr/local/include
   /usr/include
 )

@@ -1,3 +1,10 @@
+/*
+ * @Author: USTB.MophyChen 
+ * @Date: 2018-03-29 16:30:25 
+ * @Last Modified by: USTB.MophyChen
+ * @Last Modified time: 2018-03-30 14:20:09
+ */
+ 
 #include <dirent.h>
 #include <iostream>
 #include <regex>
@@ -53,18 +60,28 @@ vector<string> get_all_files(string path, string suffix)
     return files;
 }
 
-int main() {  
+void processWithSamping(){
+    char* src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";  
+    char* tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
+
+    // sampling(src, tar_dir);
+
+    vector<string> files = get_all_files(tar_dir,".*(jpg|bmp|jpeg)$");
+    cout<< "==========start program========="<<endl;
+    for(int i = 0; i <files.size(); i++)  
+    {  
+        cout<<files[i]<<endl;  
+    }
+}
+
+void processWithoutSamping(){
     vector<string> files;
     char* src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";  
     char* tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 
-    sampling(src, tar_dir);
+}
 
-    // files = get_all_files(src,".*(jpg|bmp|jpeg)$");
-    // cout<< "==========start program========="<<endl;
-    // for(int i = 0; i <files.size(); i++)  
-    // {  
-    //     cout<<files[i]<<endl;  
-    // }
+int main() {
+    processWithSamping();
     return 0;  
 }

@@ -40,3 +40,7 @@
 /CMakeFiles/
 Makefile
 CMakeCache.txt
+*.cmake
+
+#vscode
+/.vscode/

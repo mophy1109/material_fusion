@@ -123,6 +123,19 @@ material_fusion/fast:
 	$(MAKE) -f src/CMakeFiles/material_fusion.dir/build.make src/CMakeFiles/material_fusion.dir/build
 .PHONY : material_fusion/fast
 
+#=============================================================================
+# Target rules for targets named fusion
+
+# Build rule for target.
+fusion: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 fusion
+.PHONY : fusion
+
+# fast build rule for target.
+fusion/fast:
+	$(MAKE) -f src/CMakeFiles/fusion.dir/build.make src/CMakeFiles/fusion.dir/build
+.PHONY : fusion/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -132,6 +145,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... material_fusion"
+	@echo "... fusion"
 .PHONY : help
 
 
