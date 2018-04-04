@@ -1,16 +1,18 @@
 /*
  * @Author: USTB.MophyChen
  * @Date: 2018-03-29 16:30:25
- * @Last Modified by: USTB.MophyChen
- * @Last Modified time: 2018-03-30 14:20:09
+ * @Last Modified by: USTB.mophy1109
+ * @Last Modified time: 2018-04-04 18:10:51
  */
 
 #include "CFusion.h"
 #include "Preprocess.h"
-#include "cv.h"
 #include "highgui.h"
 #include <dirent.h>
 #include <iostream>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <string>
 
 using namespace std;
@@ -21,8 +23,8 @@ void ProcessWithSamping() {
 	char *tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 
 	// Sampling(src, tar_dir);
-
-	vector<string> files = GetAllFiles(tar_dir, ".*(jpg|bmp|jpeg)$");
+	CFusion CF;
+	vector<string> files = CF.GetAllFiles(tar_dir, ".*(jpg|bmp|jpeg)$");
 	cout << "==========start program=========" << endl;
 	for (int i = 0; i < files.size(); i++) {
 		cout << files[i] << endl;
@@ -31,8 +33,7 @@ void ProcessWithSamping() {
 
 void ProcessWithoutSamping() {
 	vector<string> files;
-	char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";
-	char *tar_dir = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
+	char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 }
 
 int main() {

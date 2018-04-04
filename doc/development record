@@ -1,3 +1,4 @@
 class stitching : 计算偏移、拼接功能
 class fusion: 融合算法
 class clarity: 清晰度计算
+class CFuImage: 图像类
