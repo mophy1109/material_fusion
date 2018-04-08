@@ -2,7 +2,7 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-04-02 16:05:55
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-04 18:15:41
+ * @Last Modified time: 2018-04-08 16:15:03
  * @For test
  */
 
@@ -19,7 +19,7 @@ using namespace std;
 using namespace cv;
 
 void mytestsift() {
-	Mat img1 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X 500PIC/sam00000.jpg", IMREAD_GRAYSCALE);
+	Mat img1 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X 500PIC/sam00002.jpg", IMREAD_GRAYSCALE);
 	Mat img2 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X 500PIC/sam00001.jpg", IMREAD_GRAYSCALE);
 	Mat result;
 	CStitching CCCC;
@@ -28,5 +28,5 @@ void mytestsift() {
 
 int main() {
 	mytestsift();
-	return 1;
+	return 0;
 }
