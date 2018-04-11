@@ -27,6 +27,7 @@ class CStitching {
 	cv::Rect rec_ROI;
 
 	public:
+	CalMethod CalOffsetMethod = AFFINE; //默认使用放射矩阵求偏移量
 	int Stitching(cv::Mat img1, cv::Mat img2, cv::Mat result);
-	Offset CalOffset(std::vector<Offset> offsets, int method);
+	Offset CalOffset(std::vector<cv::Point> train_point, std::vector<cv::Point> query_point, CalMethod method);
 };

@@ -9,8 +9,10 @@
 #include "SiftGPU.h"
 
 #include <GL/gl.h>
+#include <algorithm>	   //std::sort
 #include <boost/timer.hpp> //timer
 #include <iostream>
+#include <opencv2/calib3d.hpp>
 #include <vector>
 
 using namespace cv;
@@ -18,14 +20,14 @@ using namespace std;
 
 int CStitching::Stitching(Mat img1, Mat img2, Mat result) {
 
-	//采用CUDA并行方式进行图像陪准
+	//采用CUDA并行方式进行图像配准
 	SiftGPU sift_1;
 	SiftGPU sift_2;
 	char *myargv[2] = { "-cuda", "0" };
 	sift_1.ParseParam(2, myargv);
 	sift_2.ParseParam(2, myargv);
 
-	//检查硬件是否支持SiftGPU
+	// test if your hardware support SiftGPU
 	int support = sift_1.CreateContextGL();
 	if (support != SiftGPU::SIFTGPU_FULL_SUPPORTED) {
 		cout << "SiftGPU is not supported!" << endl;
@@ -67,47 +69,50 @@ int CStitching::Stitching(Mat img1, Mat img2, Mat result) {
 	matcher.SetDescriptors(1, num_2, descriptors_2);
 
 	// save offsets for further use
-	vector<Offset> offsets;
+	vector<Point> offsets;
+	vector<Point> train_point;
+	vector<Point> query_point;
+
 	int match_buf[4096][2];
 	int nmatch = matcher.GetSiftMatch(4096, match_buf);
 	for (int i = 0; i < nmatch; i++) {
-		float deltx = keys_2[match_buf[i][1]].x - keys_1[match_buf[i][0]].x;
-		float delty = keys_2[match_buf[i][1]].y - keys_1[match_buf[i][0]].y;
-		Offset tmp_offset;
-		tmp_offset.x = deltx;
-		tmp_offset.y = delty;
-		offsets.push_back(tmp_offset);
+		train_point.push_back(Point(keys_1[match_buf[i][0]].x, keys_1[match_buf[i][0]].y));
+		query_point.push_back(Point(keys_2[match_buf[i][1]].x, keys_2[match_buf[i][1]].y));
 		// cout << "(" << (string)offsets[i].x << ")" << endl;
 	}
-	Offset off = CalOffset(offsets, AVERAGE);
-	cout << "(" << off.x << "," << off.y << ")" << endl;
-	cout << "Found " << nmatch << " matches." << endl;
-	cout << "match cost time=" << timer.elapsed() << endl;
+	cout << "Found " << nmatch << " matches.     Match cost time=" << timer.elapsed() << endl;
+
+	timer.restart();
+	Offset off = CalOffset(train_point, query_point, CalOffsetMethod);
+	cout << "AFFINE OFFSET:(" << off.x << "," << off.y << ")      CalOffset cost time=" << timer.elapsed() << endl;
 
 	return 0;
 }
 
-Offset CStitching::CalOffset(vector<Offset> offsets, int method) {
-	Offset off = { -9999, -9999 };
+Offset CStitching::CalOffset(vector<Point> train_point, vector<Point> query_point, CalMethod method) {
+	Offset off = { -9999, -9999 }; //返回项中出现-9999等说明出现错误
 	switch (method) {
 		case AVERAGE: {
-			float sum_x = 0, sum_y = 0;
+			double sum_x = 0, sum_y = 0;
 			int i;
-			for (i = 0; i < offsets.size(); i++) {
-				sum_x += offsets[i].x;
-				sum_y += offsets[i].y;
+			for (i = 0; i < train_point.size(); i++) {
+				sum_x += query_point[i].x - train_point[i].x;
+				sum_y += query_point[i].y - train_point[i].y;
 			}
 			off = { sum_x / i, sum_y / i };
-			break;
-		}
-		case MODE: {
-
 			break;
 		}
 		case HOMO: {
 			break;
 		}
-		case RANSAC: {
+		case AFFINE: {
+			std::vector<uchar> inliers(train_point.size(), 0);
+			Mat AffineMatrix = estimateAffine2D(train_point, query_point, inliers, RANSAC, 3, 2000, 0.995, 10);
+			off = { AffineMatrix.ptr<double>(0)[2], AffineMatrix.ptr<double>(1)[2] };
+			// std::cout << "estimateAffinePartial2D" << AffineMatrix << "\n" << std::flush;
+			break;
+		}
+		case PROSAC: {
 			break;
 		}
 	}

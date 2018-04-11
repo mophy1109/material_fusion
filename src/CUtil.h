@@ -10,12 +10,12 @@
 
 #endif
 
-typedef struct Offset { float x, y; } Offset;
+typedef struct Offset { double x, y; } Offset;
 enum CalMethod {
 	AVERAGE,
-	MODE,
 	HOMO,
-	RANSAC,
+	AFFINE,
+	PROSAC,
 	// OTHERS....
 
 };
