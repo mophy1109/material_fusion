@@ -10,7 +10,7 @@
 
 #endif
 
-typedef struct Offset { double x, y; } Offset;
+typedef struct Offset { int x, y; } Offset;
 enum CalMethod {
 	AVERAGE,
 	HOMO,

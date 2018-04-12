@@ -24,10 +24,14 @@ class CStitching {
 	cv::Mat m_Img2;
 
 	cv::Mat m_Result;
+	cv::Mat roi1;
+	cv::Mat roi2;
 	cv::Rect rec_ROI;
+	Offset g_offset = { 0, 0 }; //初始化偏移量0, 0
 
 	public:
 	CalMethod CalOffsetMethod = AFFINE; //默认使用放射矩阵求偏移量
-	int Stitching(cv::Mat img1, cv::Mat img2, cv::Mat result);
+	int Stitching(cv::Mat img1, cv::Mat img2, cv::Mat &result);
 	Offset CalOffset(std::vector<cv::Point> train_point, std::vector<cv::Point> query_point, CalMethod method);
+	std::vector<cv::Mat> CalROI(const cv::Mat &img1, const cv::Mat &img2);
 };

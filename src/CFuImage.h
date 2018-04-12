@@ -15,6 +15,8 @@ class CFuImage {
 	cv::Mat m_Roi;
 	int i_Width, i_Height; //大小
 	int i_Devx, i_Devy;	//全局偏移
+	float descriptors;
+	vector<SiftGPU::SiftKeypoint> key;
 
 	public:
 	CFuImage(cv::Mat img);
