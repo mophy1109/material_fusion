@@ -138,59 +138,85 @@ Offset CStitching::CalOffset(vector<Point> train_point, vector<Point> query_poin
 vector<Mat> CStitching::CalROI(const Mat &img1, const Mat &img2) {
 	Mat ROI1;
 	Mat ROI2;
+	Mat out, ROIimg1, ROIimg2;
 	int rows1 = img1.rows;
 	int cols1 = img1.cols;
 	int rows2 = img1.rows;
 	int cols2 = img2.cols;
 
-	// if (g_offset.x >= 0 and g_offset.y >= 0):
-	//     out = np.zeros((max(rows1, g_offset.y + rows2), max(g_offset.x + cols2, cols1)), dtype='uint8')
-	//     #左上角图1，右下角图2
-	//     print ('1')
-	//     ROI_ltx = g_offset.x
-	//     ROI_lty = g_offset.y
-	//     ROI_rbx = min(g_offset.x + cols2, cols1)
-	//     ROI_rby = min(g_offset.y + rows2, rows1)
-	//     out[0:rows1, 0:cols1] = lastResult.copy()
-	//     ROIimg1 = out[ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy()
-	//     out[g_offset.y:g_offset.y + rows2, g_offset.x:g_offset.x + cols2] = img2.copy()
-	//     ROIimg2 = out[ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy()
-
 	if (g_offset.x >= 0 && g_offset.y >= 0) {
-		Mat out = Mat(max(rows1, g_offset.y + rows2), max(g_offset.x + cols2, cols1), CV_8U);
-		cout << "type 1 : right down" << endl;
-		int ROI_ltx = g_offset.x;
-		int ROI_lty = g_offset.y;
-		int ROI_rbx = min(g_offset.x + cols2, cols1);
-		int ROI_rby = min(g_offset.y + rows2, rows1);
-		//将两图先直接赋值给out的对应部分，并提取ROI
+		// image2 is at the right buttom corner of image1
+		out = Mat(max(rows1, g_offset.y + rows2), max(g_offset.x + cols2, cols1), CV_8U);
+		cout << "type 1 : right buttom" << endl;
+
+		int ROI_x = g_offset.x;
+		int ROI_y = g_offset.y;
+		int ROI_width = min(cols2, cols1 - g_offset.x);
+		int ROI_height = min(rows2, rows1 - g_offset.y);
+
+		// put 2 images together and extract ROIs
 		img1.copyTo(out(Rect(0, 0, cols1, rows1)));
-		Mat ROIimg1 = out(Rect());
-		img2.copyTo(out(Rect(g_offset.y, g_offset.x, g_offset.x + cols2, g_offset.y + rows2)));
+		ROIimg1 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+		img2.copyTo(out(Rect(g_offset.x, g_offset.y, cols2, rows2)));
+		ROIimg2 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+
+	} else if (g_offset.x >= 0 && g_offset.y < 0) {
+		// image2 is at the right top corner of image1
+		out = Mat(-g_offset.y + rows1, max(g_offset.x + cols2, cols1), CV_8U);
+		cout << "type 2 : right top" << endl;
+
+		int ROI_x = g_offset.x;
+		int ROI_y = -g_offset.y;
+		int ROI_width = min(cols2, cols1 - g_offset.x);
+		int ROI_height = rows2 + g_offset.y;
+
+		// put 2 images together and extract ROIs
+		img1.copyTo(out(Rect(0, -g_offset.y, cols1, rows1)));
+		ROIimg1 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+		img2.copyTo(out(Rect(g_offset.x, 0, cols2, rows2)));
+		ROIimg2 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+	} else if (g_offset.x < 0 and g_offset.y >= 0) {
+		// image2 is at the right up corner of image1
+
+		out = Mat(max(rows1, g_offset.y + rows2), -g_offset.x + cols1, CV_8U);
+		cout << "type 3 :left bottom" << endl;
+
+		int ROI_x = -g_offset.x;
+		int ROI_y = g_offset.y;
+		int ROI_width = cols2 + g_offset.x;
+		int ROI_height = min(rows2, rows1 - g_offset.y);
+
+		// put 2 images together and extract ROIs
+		img1.copyTo(out(Rect(-g_offset.x, 0, cols1, rows1)));
+		ROIimg1 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+		img2.copyTo(out(Rect(0, g_offset.y, cols2, rows2)));
+		ROIimg2 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+		g_offset.x = 0;
+	} else {
+		// image2 is at the left top corner of image1
+		out = Mat(-g_offset.y + rows1, -g_offset.x + cols1, CV_8U);
+		cout << "type 4 :left top" << endl;
+		int ROI_x = -g_offset.x;
+		int ROI_y = -g_offset.y;
+		int ROI_width = cols2 + g_offset.x;
+		int ROI_height = rows2 + g_offset.y;
+
+		// put 2 images together and extract ROIs
+		img1.copyTo(out(Rect(-g_offset.x, -g_offset.y, cols1, rows1)));
+		ROIimg1 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+		img2.copyTo(out(Rect(0, 0, cols2, rows2)));
+		ROIimg2 = out(Rect(ROI_x, ROI_y, ROI_width, ROI_height)).clone();
+		g_offset.x = 0;
+		g_offset.y = 0;
 	}
 
-	// 	elif (g_offset.x >= 0 and g_offset.y < 0)
-	// 	: out = np.zeros((-g_offset.y + rows1, max(g_offset.x + cols2, cols1)), dtype = 'uint8')
-	// #左下角图1，向右上角图2
-	// 			print('2') ROI_ltx = g_offset.x ROI_lty = -g_offset.y ROI_rbx = min(g_offset.x + cols2, cols1) ROI_rby =
-	// 	  rows2 out [-g_offset.y:-g_offset.y + rows1, 0:cols1] = lastResult.copy() ROIimg1 =
-	// 	  out [ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy() out [0:rows2, g_offset.x:g_offset.x + cols2] = img2.copy() ROIimg2 =
-	// 	  out [ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy() g_offset.y = 0 elif (g_offset.x < 0 and g_offset.y >= 0)
-	// 	: out = np.zeros((max(rows1, g_offset.y + rows2), -g_offset.x + cols1), dtype = 'uint8')
-	// #右上角图1，左下角图2
-	// 			print('3') ROI_ltx = -g_offset.x ROI_lty = g_offset.y ROI_rbx = cols2 ROI_rby =
-	// 	  min(g_offset.y + rows2, rows1) out [0:rows1, -g_offset.x:-g_offset.x + cols1] = lastResult.copy() ROIimg1 =
-	// 	  out [ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy() out [g_offset.y:g_offset.y + rows2, 0:cols2] = img2.copy() ROIimg2 =
-	// 	  out [ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy() g_offset.x =
-	// 	  0 else : out = np.zeros((-g_offset.y + rows1, -g_offset.x + cols1), dtype = 'uint8')
-	// #右下角图1，左上角图2
-	// 					 print('4') ROI_ltx = -g_offset.x ROI_lty = -g_offset.y ROI_rbx = cols2 ROI_rby =
-	// 			   rows2 out [-g_offset.y:-g_offset.y + rows1, -g_offset.x:-g_offset.x + cols1] = lastResult.copy() ROIimg1 =
-	// 			   out [ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy() out [0:rows2, 0:cols2] = img2.copy() ROIimg2 =
-	// 			   out [ROI_lty:ROI_rby, ROI_ltx:ROI_rbx].copy() g_offset.x = 0 g_offset.y = 0
+	imshow("roi1", ROIimg1);
+	waitKey(500);
+	imshow("roi2", ROIimg2);
+	waitKey(500);
 
 	vector<Mat> ROI(2);
-	ROI.push_back(ROI1);
-	ROI.push_back(ROI2);
+	ROI.push_back(ROIimg1);
+	ROI.push_back(ROIimg2);
 	return (ROI);
 }

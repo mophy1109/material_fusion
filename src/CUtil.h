@@ -10,6 +10,9 @@
 
 #endif
 
+#include <string>
+#include <vector>
+
 typedef struct Offset { int x, y; } Offset;
 enum CalMethod {
 	AVERAGE,
@@ -19,3 +22,5 @@ enum CalMethod {
 	// OTHERS....
 
 };
+
+std::vector<std::string> GetAllFiles(std::string path, std::string suffix);

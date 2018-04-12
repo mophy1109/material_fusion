@@ -11,12 +11,12 @@ find_package(GLUT REQUIRED)
 find_package(Glew REQUIRED)
 
 # 设置SiftGPU头文件与库文件所在位置
-include_directories( ${PROJECT_BINARY_DIR}/src/SiftGPU ${OpenGL_INCLUDE_DIR})
+include_directories( ${PROJECT_BINARY_DIR}/src/SiftGPU ${OpenGL_INCLUDE_DIR} )
 set( SIFTGPU_LIBS ${PROJECT_BINARY_DIR}/bin/libsiftgpu.so )
 
-add_library(Fusion Preprocess.cpp CFusion.cpp)
+add_library( Fusion Preprocess.cpp CUtil.cpp CFusion.cpp )
 add_executable( material_fusion main.cpp)
-add_executable( testpro mytest.cpp CStitching.cpp)
+add_executable( testpro mytest.cpp CStitching.cpp )
 
 target_link_libraries( material_fusion
     Fusion
