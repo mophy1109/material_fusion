@@ -8,8 +8,6 @@
 #ifndef CFUSION_H
 #define CFUSION_H
 
-#endif
-
 #include <opencv2/core/core.hpp>
 #include <string>
 #include <vector>
@@ -23,3 +21,5 @@ class CFusion {
 	std::vector<std::string> GetAllFiles(std::string path, std::string suffix);
 };
 // void fusionImages(std::vector<char*> image_files);
+
+#endif

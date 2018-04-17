@@ -6,21 +6,30 @@
  */
 #ifndef CFUIMAGE_H
 #define CFUIMAGE_H
-#endif
 
-#include "cv.h"
+#include "SiftGPU.h"
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/xfeatures2d.hpp>
+
 class CFuImage {
 	private:
-	cv::Mat m_Img;
 	cv::Mat m_Roi;
 	int i_Width, i_Height; //大小
 	int i_Devx, i_Devy;	//全局偏移
-	float descriptors;
-	vector<SiftGPU::SiftKeypoint> key;
 
 	public:
+	cv::Mat m_Img;
+	int FeatureNum;
+	float *descriptor;
+	std::vector<SiftGPU::SiftKeypoint> key;
+	char *myargv[4] = { "-cuda", "0", "-v", "0" }; // siftGPU 默认参数
+
+	CFuImage();
 	CFuImage(cv::Mat img);
 	CFuImage(cv::Mat img, int width, int height);
 	bool SetROI(cv::Mat roi);
 	bool SetImageSize(int width, int height);
 };
+
+#endif

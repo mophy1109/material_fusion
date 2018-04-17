@@ -14,9 +14,9 @@ find_package(Glew REQUIRED)
 include_directories( ${PROJECT_BINARY_DIR}/src/SiftGPU ${OpenGL_INCLUDE_DIR} )
 set( SIFTGPU_LIBS ${PROJECT_BINARY_DIR}/bin/libsiftgpu.so )
 
-add_library( Fusion Preprocess.cpp CUtil.cpp CFusion.cpp )
+add_library( Fusion Preprocess.cpp CUtil.cpp CFusion.cpp CStitching.cpp CFuImage.cpp)
 add_executable( material_fusion main.cpp)
-add_executable( testpro mytest.cpp CStitching.cpp )
+add_executable( testpro mytest.cpp)
 
 target_link_libraries( material_fusion
     Fusion

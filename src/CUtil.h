@@ -8,8 +8,6 @@
 #ifndef CUTIL_H
 #define CUTIL_H
 
-#endif
-
 #include <string>
 #include <vector>
 
@@ -24,3 +22,4 @@ enum CalMethod {
 };
 
 std::vector<std::string> GetAllFiles(std::string path, std::string suffix);
+#endif

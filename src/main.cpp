@@ -2,13 +2,15 @@
  * @Author: USTB.MophyChen
  * @Date: 2018-03-29 16:30:25
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-04 18:10:51
+ * @Last Modified time: 2018-04-16 14:40:51
  */
 
-#include "CUtil.h"
+#include "CFuImage.h"
+#include "CStitching.h"
 #include "Preprocess.h"
 #include "highgui.h"
 #include <algorithm>
+#include <boost/timer.hpp> //timer
 #include <dirent.h>
 #include <iostream>
 #include <opencv2/core/core.hpp>
@@ -24,24 +26,48 @@ void ProcessWithSamping(char *src, char *tar_dir) {
 	vector<string> files = GetAllFiles(tar_dir, ".*(jpg|bmp|jpeg)$");
 	sort(files.begin(), files.end());
 	cout << "==========start program=========" << endl;
-	for (int i = 0; i < files.size(); i++) {
-	}
 }
 
-void ProcessWithoutSamping(char *dir) {
+int ProcessWithoutSamping(char *dir) {
+	//采用CUDA并行方式进行图像配准
+	SiftGPU sift;
+	char *myargv[4] = { "-cuda", "0", "-v", "0" }; // siftGPU 默认参数
+	sift.ParseParam(4, myargv);
+
+	// test if your hardware support SiftGPU
+	int support = sift.CreateContextGL();
+	if (support != SiftGPU::SIFTGPU_FULL_SUPPORTED) {
+		cout << "SiftGPU is not supported!" << endl;
+		return 1;
+	}
+	boost::timer timer;
 	vector<string> files = GetAllFiles(dir, ".*(jpg|bmp|jpeg)$");
 	sort(files.begin(), files.end());
 	cout << "==========start program=========" << endl;
-	// for (int i = 0; i < files.size(); i++) {
-	// 	cout << files[i] << endl;
-	// }
-	// char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
+	Mat result = imread(files[0], IMREAD_GRAYSCALE);
+	CStitching stitch;
+	CFuImage F_Img1 = CFuImage(result);
+	for (int i = 1; i < /*files.size()*/ 50 - 1; i++) {
+		cout << "\nProcessing image " << i - 1 << " and image " << i << endl;
+		Mat tempImg = imread(files[i], IMREAD_GRAYSCALE);
+		CFuImage F_Img2 = CFuImage(tempImg);
+		stitch.Stitching(F_Img1, F_Img2, result);
+		F_Img1 = F_Img2;
+		tempImg.release();
+		// result = imread("./temp/tmp_img.jpg", IMREAD_GRAYSCALE);
+
+		// char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
+	}
+	cout << "total cost time:" << timer.elapsed() << endl;
+	imwrite("result.jpg", result);
 }
 
 int main() {
-	// ProcessWithSamping();
-	char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 
-	ProcessWithoutSamping(src);
+	char src[255] = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";
+	char tar[255] = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X/";
+	// cin >> tar;
+	// ProcessWithSamping(src, tar);
+	ProcessWithoutSamping(tar);
 	return 0;
 }
