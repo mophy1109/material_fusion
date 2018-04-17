@@ -47,7 +47,7 @@ int ProcessWithoutSamping(char *dir) {
 	Mat result = imread(files[0], IMREAD_GRAYSCALE);
 	CStitching stitch;
 	CFuImage F_Img1 = CFuImage(result);
-	for (int i = 1; i < /*files.size()*/ 50 - 1; i++) {
+	for (int i = 1; i < files.size() - 1; i++) {
 		cout << "\nProcessing image " << i - 1 << " and image " << i << endl;
 		Mat tempImg = imread(files[i], IMREAD_GRAYSCALE);
 		CFuImage F_Img2 = CFuImage(tempImg);
@@ -59,7 +59,7 @@ int ProcessWithoutSamping(char *dir) {
 		// char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 	}
 	cout << "total cost time:" << timer.elapsed() << endl;
-	imwrite("result.jpg", result);
+	imwrite("../data/result/base.jpg", result);
 }
 
 int main() {
