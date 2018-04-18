@@ -51,6 +51,7 @@ bool CFuImage::SetImageSize(int width, int height) {
 }
 
 void CFuImage::Clone(const CFuImage &image) {
+	// mem leak happens when calling : CFuImage A = B, because descriptor is a ptr.
 	//直接拷贝时会出现内存泄漏，descriptor需要手动释放
 	key.clear();
 	delete[] descriptor;
