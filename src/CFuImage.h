@@ -26,8 +26,10 @@ class CFuImage {
 	char *myargv[4] = { "-cuda", "0", "-v", "0" }; // siftGPU 默认参数
 
 	CFuImage();
+	~CFuImage();
 	CFuImage(cv::Mat img);
 	CFuImage(cv::Mat img, int width, int height);
+	void Clone(const CFuImage &cfuimage);
 	bool SetROI(cv::Mat roi);
 	bool SetImageSize(int width, int height);
 };

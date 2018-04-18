@@ -55,7 +55,9 @@ int CStitching::Stitching(const CFuImage &img1, const CFuImage &img2, Mat &resul
 	g_offset.x += off.x;
 	g_offset.y += off.y;
 
+	timer.restart();
 	CalROI(result, img2.m_Img);
+	cout << "CalROI cost time=" << timer.elapsed() << endl;
 
 	return 0;
 }
@@ -111,7 +113,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 	if (g_offset.x >= 0 && g_offset.y >= 0) {
 		// image2 is at the right buttom corner of image1
 		out = Mat(max(rows1, g_offset.y + rows2), max(g_offset.x + cols2, cols1), CV_8U);
-		cout << "type 1 : right buttom" << endl;
+		// cout << "type 1 : right buttom" << endl;
 
 		int ROI_x = g_offset.x;
 		int ROI_y = g_offset.y;
@@ -128,7 +130,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 	} else if (g_offset.x >= 0 && g_offset.y < 0) {
 		// image2 is at the right top corner of image1
 		out = Mat(-g_offset.y + rows1, max(g_offset.x + cols2, cols1), CV_8U);
-		cout << "type 2 : right top" << endl;
+		// cout << "type 2 : right top" << endl;
 
 		int ROI_x = g_offset.x;
 		int ROI_y = -g_offset.y;
@@ -146,7 +148,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 		// image2 is at the right up corner of image1
 
 		out = Mat(max(rows1, g_offset.y + rows2), -g_offset.x + cols1, CV_8U);
-		cout << "type 3 :left bottom" << endl;
+		// cout << "type 3 :left bottom" << endl;
 
 		int ROI_x = -g_offset.x;
 		int ROI_y = g_offset.y;
@@ -164,7 +166,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 	} else {
 		// image2 is at the left top corner of image1
 		out = Mat(-g_offset.y + rows1, -g_offset.x + cols1, CV_8U);
-		cout << "type 4 :left top" << endl;
+		// cout << "type 4 :left top" << endl;
 		int ROI_x = -g_offset.x;
 		int ROI_y = -g_offset.y;
 		int ROI_width = cols2 + g_offset.x;

@@ -52,9 +52,8 @@ int ProcessWithoutSamping(char *dir) {
 		Mat tempImg = imread(files[i], IMREAD_GRAYSCALE);
 		CFuImage F_Img2 = CFuImage(tempImg);
 		stitch.Stitching(F_Img1, F_Img2, result);
-		F_Img1 = F_Img2;
+		F_Img1.Clone(F_Img2);
 		tempImg.release();
-		// result = imread("./temp/tmp_img.jpg", IMREAD_GRAYSCALE);
 
 		// char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 	}
@@ -64,8 +63,8 @@ int ProcessWithoutSamping(char *dir) {
 
 int main() {
 
-	char src[255] = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/videos/500px.avi";
-	char tar[255] = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X/";
+	char src[255] = "../data/videos/500px.avi";
+	char tar[255] = "../data/500X/";
 	// cin >> tar;
 	// ProcessWithSamping(src, tar);
 	ProcessWithoutSamping(tar);
