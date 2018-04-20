@@ -9,6 +9,9 @@
 #define CFUSION_H
 
 #include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <string>
 #include <vector>
 
@@ -17,9 +20,15 @@ class CFusion {
 	std::vector<cv::Mat> images;
 
 	public:
-	void FusionImages(std::string dir);
-	std::vector<std::string> GetAllFiles(std::string path, std::string suffix);
+};
+enum FusionMethod {
+	LINEAR,
+	MULTIBAND,
+
 };
 // void fusionImages(std::vector<char*> image_files);
+void FusionImages(cv::Mat roi1, cv::Mat roi2, FusionMethod method);
 
+cv::Mat StretchImage(cv::Mat region);
+cv::Mat reconstruct(std::vector<cv::Mat> input_pyramid);
 #endif

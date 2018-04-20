@@ -52,13 +52,14 @@ int ProcessWithoutSamping(char *dir) {
 		Mat tempImg = imread(files[i], IMREAD_GRAYSCALE);
 		CFuImage F_Img2 = CFuImage(tempImg);
 		stitch.Stitching(F_Img1, F_Img2, result);
+		imwrite("../data/result/base.jpg", result);
 		F_Img1.Clone(F_Img2);
 		tempImg.release();
 
 		// char *src = "/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/result/";
 	}
 	cout << "total cost time:" << timer.elapsed() << endl;
-	imwrite("../data/result/base.jpg", result);
+	// imwrite("../data/result/base.jpg", result);
 }
 
 int main() {

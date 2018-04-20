@@ -28,7 +28,7 @@ CFuImage::CFuImage(cv::Mat img) {
 	// cout << "Num of features :" << FeatureNum << endl;
 
 	descriptor = new float[128 * FeatureNum];
-	cout << &descriptor << endl;
+	// cout << &descriptor << endl;
 	key = vector<SiftGPU::SiftKeypoint>(FeatureNum);
 	sift.GetFeatureVector(&key[0], &descriptor[0]);
 }
