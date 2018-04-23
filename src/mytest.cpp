@@ -23,7 +23,15 @@ void mytestsift() {
 
 	Mat img1 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X/00001.jpg", IMREAD_GRAYSCALE);
 	Mat img2 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X/00002.jpg", IMREAD_GRAYSCALE);
-	cout << img1.size() << endl;
+
+	Mat_<float> f_img1;
+	img1.convertTo(f_img1, CV_32F, 1.0 / 255.0);
+
+	vector<Mat_<float>> lap = LaplacianPyramid(f_img1);
+	Mat imgr = reconstruct(lap);
+	imshow("origin", img1);
+	imshow("result", imgr);
+	waitKey(0);
 }
 
 int main() {

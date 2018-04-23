@@ -30,5 +30,7 @@ enum FusionMethod {
 void FusionImages(cv::Mat roi1, cv::Mat roi2, FusionMethod method);
 
 cv::Mat StretchImage(cv::Mat region);
-cv::Mat reconstruct(std::vector<cv::Mat> input_pyramid);
+cv::Mat reconstruct(std::vector<cv::Mat_<float>> input_pyramid);
+std::vector<cv::Mat_<float>> GaussianPyramid(cv::Mat_<float> R);
+std::vector<cv::Mat_<float>> LaplacianPyramid(const cv::Mat_<float> &img);
 #endif
