@@ -1,17 +1,11 @@
 /*
  * @Author: USTB.mophy1109
  * @Date: 2018-03-30 12:49:23
- * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-04 17:45:10
+ * @Last Modified by:   USTB.mophy1109
+ * @Last Modified time: 2018-05-10 10:46:22
  */
 
 #include "CFusion.h"
-#include <SiftGPU.h>
-#include <dirent.h>
-#include <iostream>
-#include <math.h>
-#include <regex>
-#include <string>
 
 using namespace std;
 using namespace cv;
@@ -33,7 +27,6 @@ Mat StretchImage(Mat region) {
 	return out;
 }
 
-// got some problem
 Mat reconstruct(vector<Mat_<float>> input_pyramid) {
 	// reconstruct Laplacian pyramid
 	Mat currentImg = input_pyramid.back();
@@ -61,6 +54,7 @@ Mat reconstruct(vector<Mat_<float>> input_pyramid) {
 // 	return GP;
 // }
 
+//待测试内容：GPU pyramid效率对比
 vector<Mat_<float>> LaplacianPyramid(const Mat_<float> &img) {
 	// generate Laplacian Pyramid of image img
 	// to generate Laplacian Pyramid, you need generate GaussianPyramid

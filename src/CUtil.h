@@ -8,6 +8,9 @@
 #ifndef CUTIL_H
 #define CUTIL_H
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <string>
 #include <vector>
 

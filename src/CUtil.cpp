@@ -8,7 +8,6 @@
 #include "CUtil.h"
 #include <dirent.h>
 #include <iostream>
-#include <opencv2/core/core.hpp>
 #include <regex>
 
 using namespace std;

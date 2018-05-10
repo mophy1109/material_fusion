@@ -1,8 +1,8 @@
 /*
  * @Author: USTB.mophy1109
  * @Date: 2018-04-02 11:13:46
- * @Last Modified by:   USTB.mophy1109
- * @Last Modified time: 2018-04-02 11:13:46
+ * @Last Modified by: USTB.mophy1109
+ * @Last Modified time: 2018-04-24 09:25:49
  */
 
 #include <iostream>
@@ -38,7 +38,7 @@ void Sampling(char *src, char *tar_dir) {
 
 	Mat frameImg; //存储单帧图像
 	Mat roi_img;
-	Rect rect(0, 0, width, height - 2); //由于源视频底部出现黑边，需要裁剪2px宽度，roi设置为width×（height-1）的图像
+	Rect rect(0, 0, width, height - 2); //由于源视频底部出现黑边，需要裁剪2px宽度，roi设置为width×（height-2）的图像
 
 	int i = 0; //采样序号
 
@@ -57,7 +57,7 @@ void Sampling(char *src, char *tar_dir) {
 
 		frameImg(rect).copyTo(roi_img); //截取图像
 
-		char tmp_filename[100];
+		char tmp_filename[20];
 		sprintf(tmp_filename, "%05d.jpg", i);
 
 		string filename(tmp_filename);

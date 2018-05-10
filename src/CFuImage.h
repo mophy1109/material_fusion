@@ -1,9 +1,10 @@
 /*
  * @Author: USTB.mophy1109
  * @Date: 2018-04-02 11:48:43
- * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-02 11:54:15
+ * @Last Modified by:   USTB.mophy1109
+ * @Last Modified time: 2018-04-23 17:25:42
  */
+
 #ifndef CFUIMAGE_H
 #define CFUIMAGE_H
 

@@ -2,13 +2,13 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-04-02 16:05:55
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-16 11:09:17
- * @For test
+ * @Last Modified time: 2018-04-23 17:25:19
  */
 
 #include "CFusion.h"
 #include "CStitching.h"
 #include "Preprocess.h"
+#include <boost/timer.hpp> //timer
 #include <dirent.h>
 #include <iostream>
 #include <opencv2/core/core.hpp>
@@ -23,7 +23,6 @@ void mytestsift() {
 
 	Mat img1 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X/00001.jpg", IMREAD_GRAYSCALE);
 	Mat img2 = imread("/media/cwh1001/Workspace/CUDA_projects/material_fusion/data/500X/00002.jpg", IMREAD_GRAYSCALE);
-
 	Mat_<float> f_img1;
 	img1.convertTo(f_img1, CV_32F, 1.0 / 255.0);
 
