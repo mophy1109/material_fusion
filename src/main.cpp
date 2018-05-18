@@ -2,13 +2,12 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-03-29 16:30:25
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-16 14:40:51
+ * @Last Modified time: 2018-05-10 17:32:37
  */
 
 #include "CFuImage.h"
 #include "CStitching.h"
 #include "Preprocess.h"
-#include "highgui.h"
 #include <algorithm>
 #include <boost/timer.hpp> //timer
 #include <dirent.h>
