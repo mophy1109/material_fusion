@@ -35,7 +35,7 @@
 /data/
 
 #CMakeFiles
-/bin/
+#/bin/
 /src/CMakeFiles/
 /CMakeFiles/
 Makefile

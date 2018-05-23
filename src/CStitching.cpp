@@ -1,8 +1,8 @@
 /*
- * @Author: USTB.mophy1109
+ * @Author: USTB.mophy1109 
  * @Date: 2018-04-02 11:13:23
- * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-16 12:12:06
+ * @Last Modified by:   USTB.mophy1109 
+ * @Last Modified time: 2018-05-23 17:08:37 
  */
 
 #include "CStitching.h"
@@ -63,10 +63,10 @@ int CStitching::Stitching(const CFuImage &img1, const CFuImage &img2, Mat &resul
 }
 
 Offset CStitching::CalOffset(vector<Point> train_point, vector<Point> query_point, CalMethod method) {
-	Offset off = { -9999, -9999 }; //返回项中出现-9999等说明出现错误
+	Offset off = { -9999, -9999 }; //if returns -9999 or so means error
 	switch (method) {
 		case AVERAGE: {
-			//计算所有偏移量的均值
+			//calculate avg of offsets
 			double sum_x = 0, sum_y = 0;
 			int i;
 			for (i = 0; i < train_point.size(); i++) {

@@ -10,11 +10,6 @@
 #include <cuda_runtime.h>
 #include <CUtil.h>
 
-//default block size, same to block size in image:4*4
-#define block_width 4
-#define block_height 4
-
-
 using namespace std;
 using namespace cv;
 using namespace cv::cuda;
