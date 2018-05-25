@@ -25,4 +25,6 @@ enum CalMethod {
 };
 
 std::vector<std::string> GetAllFiles(std::string path, std::string suffix);
+int ProcessWithSampling(char *src);
+int ProcessWithoutSampling(char *dir);
 #endif

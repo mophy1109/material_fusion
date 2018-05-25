@@ -1,8 +1,8 @@
 /*
  * @Author: USTB.mophy1109
  * @Date: 2018-03-30 12:49:23
- * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-05-10 10:53:00
+ * @Last Modified by:   USTB.mophy1109
+ * @Last Modified time: 2018-05-24 17:02:24
  */
 
 #include "CFusion.h"
@@ -16,11 +16,20 @@ void FusionImages(cv::Mat roi1, cv::Mat roi2, FusionMethod method) {
 			break;
 		}
 		case MULTIBAND: {
+			Mat_<float> f_img1;
+			Mat_<float> f_img2;
+			Mat_<float> f_Wtmat; // weight Matrix
+			roi1.convertTo(f_img1, CV_32F, 1.0 / 255.0);
+			roi2.convertTo(f_img2, CV_32F, 1.0 / 255.0);
+			vector<Mat_<float>> lap1 = LaplacianPyramid(f_img1);
+			vector<Mat_<float>> lap2 = LaplacianPyramid(f_img2);
+			// f_Wtmat =
+			// Mat imgr = reconstruct(lap);
 		}
 	}
 }
 
-Mat StretchImage(Mat region) {
+Mat_<float> StretchImage(Mat_<float> region) {
 	// region is a (0,1) img, to make it more clear, set pixel-value "1" as 255 (white) for visual demonstration.
 	Mat out = region.clone();
 	out = out * 255;
@@ -40,19 +49,21 @@ Mat reconstruct(vector<Mat_<float>> input_pyramid) {
 	return currentImg;
 }
 
-// vector<Mat> GaussianPyramid(Mat R) {
-// 	// generate the gaussian pyramid of image R
-// 	int level = (int)log(min(R.cols, R.rows));
-// 	Mat G = R.clone();
-// 	vector<Mat> GP;
-// 	GP.push_back(G);
-// 	for (int i = 0; i < level; i++) {
-// 		Mat down_level;
-// 		pyrDown(GP[i], down_level);
-// 		GP.push_back(G);
-// 	}
-// 	return GP;
-// }
+// generate gaussian pyramid of weight matrix R
+vector<Mat_<float>> GaussianPyramid(const Mat_<float> R) {
+	// generate the gaussian pyramid of image R
+	int level = (int)log(min(R.cols, R.rows));
+	Mat_<float> G = R.clone();
+	vector<Mat_<float>> GP;
+	GP.push_back(G);
+	for (int i = 0; i < level; i++) {
+		Mat_<float> down_level;
+		pyrDown(GP[i], down_level);
+		imshow("gaussian down level:" + to_string(i), StretchImage(down_level));
+		GP.push_back(down_level);
+	}
+	return GP;
+}
 
 //待测试内容：GPU pyramid效率对比
 vector<Mat_<float>> LaplacianPyramid(const Mat_<float> &img) {

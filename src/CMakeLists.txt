@@ -17,10 +17,14 @@ if (NOT CUDA_FOUND)
   message(STATUS "CUDA is not found. Project will not be built.")
 endif(NOT CUDA_FOUND)
 
+list(APPEND CUDA_NVCC_FLAGS "-std=c++11")
+SET(CUDA_PROPAGATE_HOST_FLAGS OFF)
+
 if (WIN32)
   set(EXTRA_CXX_FLAGS "/DVERBOSE /D_CRT_SECURE_NO_WARNINGS ")
   list(APPEND CUDA_NVCC_FLAGS "-arch=sm_50;--compiler-options;-O2;-DVERBOSE") 
 endif()
+
 if (UNIX)
   if (APPLE)
     set(EXTRA_CXX_FLAGS "-DVERBOSE -msse2")
@@ -37,9 +41,25 @@ SET(CUDA_SEPARABLE_COMPILATION ON)
 include_directories( ${PROJECT_BINARY_DIR}/include/SiftGPU ${OpenGL_INCLUDE_DIR} )
 set( SIFTGPU_LIBS ${PROJECT_BINARY_DIR}/bin/libsiftgpu.so )
 
-add_library( Fusion Preprocess.cpp CUtil.cpp CFusion.cpp CStitching.cpp CFuImage.cpp )
-add_executable( material_fusion main.cpp)
-add_executable( testpro mytest.cpp)
+#add_executable( material_fusion main.cpp)
+
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR} 
+)
+
+cuda_add_library( Fusion
+    Preprocess.cpp
+    CUtil.cpp
+    CFusion.cpp
+    CStitching.cpp
+    CFuImage.cpp
+    Program.cpp
+    Program.cu
+)
+
+cuda_add_executable(material_fusion
+  main.cpp
+)
 
 target_link_libraries( material_fusion
     Fusion
@@ -48,20 +68,7 @@ target_link_libraries( material_fusion
     ${GLEW_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES}
 )
 
-target_link_libraries( testpro
-    Fusion
-    ${OpenCV_LIBS}
-    ${SIFTGPU_LIBS}
-    ${GLEW_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES}
-)
-
-
 set_target_properties(material_fusion
-  PROPERTIES
-  COMPILE_FLAGS "${EXTRA_CXX_FLAGS}"			   
-)
-
-set_target_properties(testpro
   PROPERTIES
   COMPILE_FLAGS "${EXTRA_CXX_FLAGS}"			   
 )

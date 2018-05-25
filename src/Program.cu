@@ -5,15 +5,12 @@
  * @Last Modified time: 2018-05-18 10:37:40 
  */
 
-#include "program.h"
 #include <opencv2/core/cuda.hpp>
 #include <cuda_runtime.h>
-#include <CUtil.h>
 
 using namespace std;
 using namespace cv;
 using namespace cv::cuda;
-
 
 //define the image block size to calculate SF,
 #define SUB_BLOCK_WIDTH 4
@@ -35,8 +32,8 @@ __global__ void calSF(
     __syncthreads();
 
     /*
-      Because img1 and img2 have the same block size,
-      we only need to calculate CF^2 and RF^2 to compare.
+      Cause img1 and img2 have the same block size,
+      only need to calculate CF^2 and RF^2 to compare.
       so RF & CF here are actually RF^2 and CF^2
     */
 
