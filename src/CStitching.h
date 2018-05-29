@@ -2,7 +2,7 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-04-02 11:13:34
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-08 16:34:45
+ * @Last Modified time: 2018-05-25 11:43:51
  */
 
 #ifndef CSTITCHING_H
@@ -27,7 +27,7 @@ class CStitching {
 
 	public:
 	CalMethod CalOffsetMethod = AFFINE; // default: use Affine Matrix to calculate offset;
-	int Stitching(const CFuImage &img1, const CFuImage &img2, cv::Mat &result);
+	int Stitching(CFuImage &img1, CFuImage &img2, cv::Mat &result);
 	Offset CalOffset(std::vector<cv::Point> train_point, std::vector<cv::Point> query_point, CalMethod method);
 	std::vector<cv::Mat> CalROI(cv::Mat &img1, cv::Mat img2);
 };

@@ -2,7 +2,7 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-04-08 14:07:18
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-04-08 15:48:31
+ * @Last Modified time: 2018-05-28 15:29:47
  */
 
 #include "CUtil.h"
@@ -119,8 +119,8 @@ int ProcessWithSampling(char *src) {
 			return 1;
 		}
 
-		// set sampling rate to 3fps
-		if (currentFrame % int(rate / 3) != 0) {
+		// set sampling rate to 5fps
+		if (currentFrame % int(rate / 5) != 0) {
 			continue;
 		}
 
@@ -139,8 +139,9 @@ int ProcessWithSampling(char *src) {
 		stitch.Stitching(F_Img1, F_Img2, result);
 
 		// set F_Img1 to F_Img2, so that the procedure above can correctly be excuted
-		F_Img1.Clone(F_Img2);
+		// F_Img1.Clone(F_Img2);
 		tempImg.release();
+		// imwrite("../data/result/base.jpg", result);
 	}
 	cout << "total cost time:" << timer.elapsed() << endl;
 	imwrite("../data/result/base.jpg", result);
@@ -172,7 +173,7 @@ int ProcessWithoutSampling(char *dir) {
 		CFuImage F_Img2 = CFuImage(tempImg);
 		stitch.Stitching(F_Img1, F_Img2, result);
 		// imwrite("../data/result/base.jpg", result);
-		F_Img1.Clone(F_Img2);
+		// F_Img1.Clone(F_Img2);
 		tempImg.release();
 	}
 	cout << "total cost time:" << timer.elapsed() << endl;

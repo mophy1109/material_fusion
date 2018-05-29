@@ -37,13 +37,13 @@ void mytestReconstruct() {
 
 void testProcess() {
 	char src[255] = "../data/videos/500px.avi";
-	char tar[255] = "../data/500X/";
+	char tar[255] = "../data/test/";
 	// cin >> tar;
 	// ProcessWithoutSampling(tar);
 	ProcessWithSampling(src);
 }
 
 int main() {
-
+	testProcess();
 	return 0;
 }

@@ -1,11 +1,12 @@
 /*
- * @Author: USTB.mophy1109 
+ * @Author: USTB.mophy1109
  * @Date: 2018-04-02 11:13:23
- * @Last Modified by:   USTB.mophy1109 
- * @Last Modified time: 2018-05-23 17:08:37 
+ * @Last Modified by: USTB.mophy1109
+ * @Last Modified time: 2018-05-28 17:03:10
  */
 
 #include "CStitching.h"
+#include "CFusion.h"
 #include <algorithm>	   //std::sort
 #include <boost/timer.hpp> //timer
 #include <iostream>
@@ -16,7 +17,13 @@
 using namespace cv;
 using namespace std;
 
-int CStitching::Stitching(const CFuImage &img1, const CFuImage &img2, Mat &result) {
+int CStitching::Stitching(CFuImage &img1, CFuImage &img2, Mat &result) {
+	// check if the num of matches is less than 2500
+	if (img2.key.size() < 10500) {
+		cout << img1.key.size() << "," << img2.key.size() << endl;
+		cout << "Key of img2 is less than 10500,pass." << endl;
+		return 0;
+	}
 	boost::timer timer;
 
 	// Matching descriptor vectors using SiftGPU Macher
@@ -39,6 +46,7 @@ int CStitching::Stitching(const CFuImage &img1, const CFuImage &img2, Mat &resul
 
 	int match_buf[8192][2];
 	int nmatch = matcher.GetSiftMatch(8192, match_buf);
+
 	for (int i = 0; i < nmatch; i++) {
 		train_point.push_back(Point(img1.key[match_buf[i][0]].x, img1.key[match_buf[i][0]].y));
 		query_point.push_back(Point(img2.key[match_buf[i][1]].x, img2.key[match_buf[i][1]].y));
@@ -56,17 +64,29 @@ int CStitching::Stitching(const CFuImage &img1, const CFuImage &img2, Mat &resul
 	g_offset.y += off.y;
 
 	timer.restart();
-	CalROI(result, img2.m_Img);
-	cout << "CalROI cost time=" << timer.elapsed() << endl;
 
+	// imshow("result0", result);
+	vector<Mat> rois = CalROI(result, img2.m_Img);
+	cout << "CalROI cost time=" << timer.elapsed() << endl;
+	timer.restart();
+	Mat RoiFusion = FusionImages(rois[0], rois[1], MULTIBAND);
+	// cout << RoiFusion.cols << " , " << RoiFusion.rows <<endl;
+	// cout << result.cols << " , " << result.rows <<endl;
+
+	cout << "Fusion cost time=" << timer.elapsed() << endl;
+	// cout << result.type() << " "<< RoiFusion.type() << endl;
+	RoiFusion.copyTo(result(rec_ROI));
+	// imshow("result", result);
+	// waitKey(0);
+	img1.Clone(img2);
 	return 0;
 }
 
 Offset CStitching::CalOffset(vector<Point> train_point, vector<Point> query_point, CalMethod method) {
-	Offset off = { -9999, -9999 }; //if returns -9999 or so means error
+	Offset off = { -9999, -9999 }; // if returns -9999 or so means error
 	switch (method) {
 		case AVERAGE: {
-			//calculate avg of offsets
+			// calculate avg of offsets
 			double sum_x = 0, sum_y = 0;
 			int i;
 			for (i = 0; i < train_point.size(); i++) {
@@ -84,7 +104,7 @@ Offset CStitching::CalOffset(vector<Point> train_point, vector<Point> query_poin
 			//         [n1 n2 n3]
 			//理想情况下（无旋转和畸变）(m3, n3)即为所求的偏移量
 			std::vector<uchar> inliers(train_point.size(), 0);
-			Mat AffineMatrix = estimateAffine2D(query_point, train_point, inliers, RANSAC, 3, 2000, 0.995, 10);
+			Mat AffineMatrix = estimateAffine2D(query_point, train_point, inliers, RANSAC, 3, 2000, 0.999, 50);
 			off = { (int)round(AffineMatrix.ptr<double>(0)[2]), (int)round(AffineMatrix.ptr<double>(1)[2]) };
 			// cout << "estimateAffinePartial2D" << AffineMatrix << "\n" << std::flush;
 			break;
@@ -144,8 +164,9 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 		ROIimg1 = out(rec_ROI).clone();
 		img2.copyTo(out(Rect(g_offset.x, 0, cols2, rows2)));
 		ROIimg2 = out(rec_ROI).clone();
+		g_offset.y = 0;
 	} else if (g_offset.x < 0 and g_offset.y >= 0) {
-		// image2 is at the right up corner of image1
+		// image2 is at the left bottom corner of image1
 
 		out = Mat(max(rows1, g_offset.y + rows2), -g_offset.x + cols1, CV_8U);
 		// cout << "type 3 :left bottom" << endl;
@@ -189,7 +210,8 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 	// imwrite("./temp/tmp_img.jpg", out);
 	img1.release();
 	img1 = out;
-	vector<Mat> ROI(2);
+	vector<Mat> ROI;
+
 	ROI.push_back(ROIimg1);
 	ROI.push_back(ROIimg2);
 	return (ROI);
