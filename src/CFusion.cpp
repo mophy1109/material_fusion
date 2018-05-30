@@ -1,8 +1,8 @@
 /*
  * @Author: USTB.mophy1109
  * @Date: 2018-03-30 12:49:23
- * @Last Modified by:   USTB.mophy1109
- * @Last Modified time: 2018-05-28 17:02:24
+ * @Last Modified by: USTB.mophy1109
+ * @Last Modified time: 2018-05-30 16:04:32
  */
 
 #include "CFusion.h"
@@ -46,8 +46,13 @@ Mat FusionImages(Mat &roi1, Mat &roi2, FusionMethod method) {
 				// cout << lap1[i].cols << " , " << lap1[i].rows <<endl;
 				// cout << lap2[i].cols << " , " << lap2[i].rows <<endl;
 				// cout << gaussian_SF[i].cols << " , " << gaussian_SF[i].rows <<endl;
+				Mat GF;
+				gaussian_SF[i].convertTo(GF, CV_32F);
 
-				Mat_<float> temp_level = lap1[i].mul(gaussian_SF[i]) + lap2[i].mul(1 - gaussian_SF[i]);
+				Mat_<float> temp_level = lap1[i].mul(GF) + lap2[i].mul(1 - GF);
+				// imshow("gau", gaussian_SF[i]);
+				// imshow("anti_gau", 1-gaussian_SF[i]);
+				// waitKey(0);
 				reconstructLap.push_back(temp_level);
 			}
 
@@ -82,6 +87,28 @@ Mat_<float> reconstruct(vector<Mat_<float>> input_pyramid) {
 }
 
 // generate gaussian pyramid of weight matrix R
+vector<Mat> RGaussianPyramid(const Mat_<float> R) {
+	// generate the gaussian pyramid of image R
+	int level = (int)(log10(min(R.cols, R.rows)) / log10(2));
+	Mat G;
+	R.convertTo(G, CV_8U);
+	vector<Mat> GP;
+	GP.push_back(G);
+	for (int i = 0; i < level + 1; i++) {
+		Mat down_level;
+		cv::pyrDown(GP[i], down_level);
+		// cout << GP[i].cols << " , " << GP[i].rows <<endl;
+		// cout << down_level.cols << " , " << down_level.rows <<endl;
+
+		// imshow("gaussian down level:" + to_string(i), StretchImage(down_level));
+		// waitKey(0);
+		// cout << down_level<<endl;
+		GP.push_back(down_level);
+	}
+	return GP;
+}
+
+// generate gaussian pyramid of weight matrix R
 vector<Mat_<float>> GaussianPyramid(const Mat_<float> R) {
 	// generate the gaussian pyramid of image R
 	int level = (int)(log10(min(R.cols, R.rows)) / log10(2));
@@ -96,6 +123,7 @@ vector<Mat_<float>> GaussianPyramid(const Mat_<float> R) {
 
 		// imshow("gaussian down level:" + to_string(i), StretchImage(down_level));
 		// waitKey(0);
+		// cout << down_level<<endl;
 		GP.push_back(down_level);
 	}
 	return GP;

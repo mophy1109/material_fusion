@@ -2,7 +2,7 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-05-02 11:30:14
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-05-18 10:37:40 
+ * @Last Modified time: 2018-05-29 11:23:20
  */
 
 #include <opencv2/core/cuda.hpp>
@@ -21,7 +21,7 @@ __global__ void calSF(
     const PtrStepSz<uchar> img2,
     PtrStepSz<uchar> result)
     {
-    //calculate Spatial Frequency of images and return the 
+    //calculate Spatial Frequency of images and return the weight-matrix
 
     __shared__ int RF1;//block shared memory for save RF1 in a block
     __shared__ int CF1;//block shared memory for save CF1 in a block
@@ -42,6 +42,7 @@ __global__ void calSF(
 
     if (x < img1.cols && y < img1.rows)
     {   
+        //using aromic ops to avoid conflict reading-modification-writing ops
         if (y > 0){
             atomicAdd(&CF1, (img1(y,x) - img1(y-1,x))*(img1(y,x) - img1(y-1,x)));
             atomicAdd(&CF2, (img2(y,x) - img2(y-1,x))*(img2(y,x) - img2(y-1,x)));
@@ -52,6 +53,7 @@ __global__ void calSF(
         }
         __syncthreads();
 
+        //generate weight_matrix, no need to use atomic ops cause thread in the same block get the same result
         if (RF1 + CF1 > RF2 + CF2){
             result(y/SUB_BLOCK_HEIGHT, x/SUB_BLOCK_WIDTH) = 1;
         }else{
@@ -62,8 +64,12 @@ __global__ void calSF(
 
 void calculateSF_caller(const PtrStepSz<uchar> &img1, const PtrStepSz<uchar> &img2, PtrStepSz<uchar> result, cudaStream_t stream)
 {
+    // define the block size
     dim3 block(SUB_BLOCK_WIDTH,SUB_BLOCK_HEIGHT);
+
+    // define the grid size, which is dynamically calculated with the size of img
     dim3 grid((img1.cols + block.x - 1)/block.x,(img1.rows + block.y - 1)/block.y);
+
     calSF<<<grid, block>>>(img1, img2, result);//get RF&CF of img1 and img2
     cudaDeviceSynchronize();
 }

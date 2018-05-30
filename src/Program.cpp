@@ -1,8 +1,8 @@
 /*
- * @Author: USTB.mophy1109
+ * @Author: USTB.mophy1109 
  * @Date: 2018-05-18 14:49:13
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-05-23 14:49:31
+ * @Last Modified time: 2018-05-29 11:22:47
  */
 
 #include <opencv2/cudaimgproc.hpp>
@@ -27,9 +27,16 @@ void calculateSF(const GpuMat &img1, const GpuMat &img2, GpuMat &result, Stream 
 }
 
 Mat getSFMatrix(Mat roi1, Mat roi2) {
-	// roi1 and roi2 should be gray sclase images of the same region
-	// getSFMatrix return a 0-1 Matrix, where 1 means roi1 is clear than roi2, 0 means the other way round
+	/* 
+	roi1 and roi2 should be gray sclase images of the same region.
+
+	getSFMatrix return a 0-1 Matrix, where 1 means roi1 is clear than roi2, 0 means the other way round
+
+	dst_img is 1/16 the size of source, since that block_width and block_height is 4*4, there is no need
+	to run bilateralFilter on the whole image.
+	
 	// cout << roi1.rows << " , " << roi1.cols << endl;
+	*/
 	Mat dst_img = Mat::zeros(roi1.rows / 4, roi1.cols / 4, roi1.type()); // save result
 
 	GpuMat d_img1(roi1);
@@ -38,7 +45,11 @@ Mat getSFMatrix(Mat roi1, Mat roi2) {
 	// res_img.create(d_img1.size(), d_img1.type());
 
 	calculateSF(d_img1, d_img2, bli_img);
+
+	//run bilateralFilter to remove noise
 	cuda::bilateralFilter(bli_img, bli_img, 30, 10, 7);
+
+	//resize bli_img to the same size of roi
 	cuda::resize(bli_img, res_img, Size(roi1.cols, roi1.rows), 0, 0, INTER_NEAREST);
 	res_img.download(dst_img);
 	return dst_img;

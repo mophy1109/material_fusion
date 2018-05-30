@@ -2,7 +2,7 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-04-02 11:13:23
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-05-28 17:03:10
+ * @Last Modified time: 2018-05-29 11:29:40
  */
 
 #include "CStitching.h"
@@ -132,7 +132,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 	// cout << "img2 :(" << cols2 << "," << rows2 << ")" << endl;
 	if (g_offset.x >= 0 && g_offset.y >= 0) {
 		// image2 is at the right buttom corner of image1
-		out = Mat(max(rows1, g_offset.y + rows2), max(g_offset.x + cols2, cols1), CV_8U);
+		out = Mat(max(rows1, g_offset.y + rows2), max(g_offset.x + cols2, cols1), CV_8U, Scalar(0));
 		// cout << "type 1 : right buttom" << endl;
 
 		int ROI_x = g_offset.x;
@@ -149,7 +149,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 		ROIimg2 = out(rec_ROI).clone();
 	} else if (g_offset.x >= 0 && g_offset.y < 0) {
 		// image2 is at the right top corner of image1
-		out = Mat(-g_offset.y + rows1, max(g_offset.x + cols2, cols1), CV_8U);
+		out = Mat(-g_offset.y + rows1, max(g_offset.x + cols2, cols1), CV_8U, Scalar(0));
 		// cout << "type 2 : right top" << endl;
 
 		int ROI_x = g_offset.x;
@@ -168,7 +168,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 	} else if (g_offset.x < 0 and g_offset.y >= 0) {
 		// image2 is at the left bottom corner of image1
 
-		out = Mat(max(rows1, g_offset.y + rows2), -g_offset.x + cols1, CV_8U);
+		out = Mat(max(rows1, g_offset.y + rows2), -g_offset.x + cols1, CV_8U, Scalar(0));
 		// cout << "type 3 :left bottom" << endl;
 
 		int ROI_x = -g_offset.x;
@@ -186,7 +186,7 @@ vector<Mat> CStitching::CalROI(Mat &img1, Mat img2) {
 		g_offset.x = 0;
 	} else {
 		// image2 is at the left top corner of image1
-		out = Mat(-g_offset.y + rows1, -g_offset.x + cols1, CV_8U);
+		out = Mat(-g_offset.y + rows1, -g_offset.x + cols1, CV_8U, Scalar(0));
 		// cout << "type 4 :left top" << endl;
 		int ROI_x = -g_offset.x;
 		int ROI_y = -g_offset.y;

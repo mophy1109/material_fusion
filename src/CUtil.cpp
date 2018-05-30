@@ -2,7 +2,7 @@
  * @Author: USTB.mophy1109
  * @Date: 2018-04-08 14:07:18
  * @Last Modified by: USTB.mophy1109
- * @Last Modified time: 2018-05-28 15:29:47
+ * @Last Modified time: 2018-05-29 16:29:44
  */
 
 #include "CUtil.h"
@@ -142,6 +142,9 @@ int ProcessWithSampling(char *src) {
 		// F_Img1.Clone(F_Img2);
 		tempImg.release();
 		// imwrite("../data/result/base.jpg", result);
+		// imshow("temp_result", result);
+		// waitKey(50);
+
 	}
 	cout << "total cost time:" << timer.elapsed() << endl;
 	imwrite("../data/result/base.jpg", result);
@@ -174,6 +177,7 @@ int ProcessWithoutSampling(char *dir) {
 		stitch.Stitching(F_Img1, F_Img2, result);
 		// imwrite("../data/result/base.jpg", result);
 		// F_Img1.Clone(F_Img2);
+		// imshow("result", result);
 		tempImg.release();
 	}
 	cout << "total cost time:" << timer.elapsed() << endl;
