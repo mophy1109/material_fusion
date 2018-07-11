@@ -19,18 +19,15 @@ using namespace cuda;
 #define MAX_LEVEL 7
 void calculateSF(const GpuMat &img1, const GpuMat &img2, GpuMat &result, Stream &stream = Stream::Null());
 
-void eliminateBlack(Mat& img1,Mat& img2)
-{	
-	//modify the 0s in roi1 as the value of the same location in roi2
-	for(int i=0;i<img1.rows;i++)
-	{
-	    for(int j=0;j<img1.cols;j++)
-	    {
-			if (img1.at<uchar>(i,j) == 0){
-            	img1.at<uchar>(i,j)=img2.at<uchar>(i,j);
+void eliminateBlack(Mat &img1, Mat &img2) {
+	// modify the 0s in roi1 as the value of the same location in roi2
+	for (int i = 0; i < img1.rows; i++) {
+		for (int j = 0; j < img1.cols; j++) {
+			if (img1.at<uchar>(i, j) == 0) {
+				img1.at<uchar>(i, j) = img2.at<uchar>(i, j);
 			}
-        }
-    }
+		}
+	}
 }
 
 Mat FusionImages(Mat &roi1, Mat &roi2, FusionMethod method) {
@@ -43,7 +40,7 @@ Mat FusionImages(Mat &roi1, Mat &roi2, FusionMethod method) {
 			Mat_<float> f_img1;
 			Mat_<float> f_img2;
 			Mat_<float> f_Wtmat; // weight Matrix
-			
+
 			eliminateBlack(roi1, roi2);
 
 			Mat SFMat = getSFMatrix(roi1, roi2);
@@ -170,8 +167,8 @@ vector<Mat_<float>> LaplacianPyramid(const Mat_<float> &img) {
 		Mat L = GP[i - 1] - up_level;
 		// imshow("up" + to_string(i), up_level);
 		LP.push_back(L); // add a level in Laplacian pyramid
-		// cout << L << endl;
-		// currentImg = down_level;
+						 // cout << L << endl;
+						 // currentImg = down_level;
 	}
 	// LP.push_back(currentImg);
 	return LP;

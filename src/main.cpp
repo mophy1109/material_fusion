@@ -37,13 +37,33 @@ void mytestReconstruct() {
 
 void testProcess() {
 	char src[255] = "../data/videos/500px.avi";
-	char tar[255] = "../data/test/";
-	// cin >> tar;
+	char tar[255] = "../data/out90/";
+
 	// ProcessWithoutSampling(tar);
+
 	ProcessWithSampling(src);
 }
 
-int main() {
-	testProcess();
+int main(int argc, char **argv) {
+	// for (int i = 0; i < argc; i++) {
+	// 	cout << "argument[" << i << "] is: " << argv[i] << endl;
+	// }
+	if (argc > 1) {
+		if (strcmp(argv[1], "-video") == 0) {
+			char *src = argv[2];
+			ProcessWithSampling(src);
+		} else if (strcmp(argv[1], "-image") == 0) {
+			char *src = argv[2];
+			ProcessWithoutSampling(src);
+		} else {
+			cout << argv[1] << endl;
+
+			cout << "params error" << endl;
+			return 1;
+		}
+	} else {
+		testProcess();
+	}
+
 	return 0;
 }
